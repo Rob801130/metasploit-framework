@@ -1,17 +1,36 @@
-module Acceptance::Meterpreter
-  PHP_METERPRETER = {
+module Acceptance::Session
+  METTLE_METERPRETER = {
     payloads: [
       {
-        name: "php/meterpreter_reverse_tcp",
-        extension: ".php",
-        platforms: [:osx, :linux, :windows],
-        execute_cmd: ["php", "${payload_path}"],
+        name: "linux/x64/meterpreter/reverse_tcp",
+        extension: "",
+        platforms: [:linux],
+        executable: true,
+        execute_cmd: ["${payload_path}"],
         generate_options: {
-          '-f': "raw"
+          '-f': "elf"
         },
         datastore: {
           global: {},
           module: {
+            MeterpreterTryToFork: false,
+            MeterpreterDebugBuild: true
+          }
+        }
+      },
+      {
+        name: "osx/x64/meterpreter_reverse_tcp",
+        extension: "",
+        platforms: [:osx],
+        executable: true,
+        execute_cmd: ["${payload_path}"],
+        generate_options: {
+          '-f': "macho"
+        },
+        datastore: {
+          global: {},
+          module: {
+            MeterpreterTryToFork: false,
             MeterpreterDebugBuild: true
           }
         }
@@ -35,15 +54,31 @@ module Acceptance::Meterpreter
               reason: "Windows only test"
             }
           ],
+          :windows
+        ],
+        skipped: false,
+        lines: {
+          linux: {
+            known_failures: []
+          },
+          osx: {
+            known_failures: []
+          },
+          windows: {
+            known_failures: []
+          }
+        }
+      },
+      {
+        name: "post/test/cmd_exec",
+        platforms: [
+          :linux,
+          :osx,
           [
             :windows,
             {
-              skip: [
-                :meterpreter_runtime_version,
-                :==,
-                "php5.3"
-              ],
-              reason: "Skip PHP 5.3 as the tests timeout - due to cmd_exec taking 15 seconds for each call. Caused by failure to detect feof correctly - https://github.com/rapid7/metasploit-payloads/blame/c7f7bc2fc0b86e17c3bc078149c71745c5e478b3/php/meterpreter/meterpreter.php#L1127-L1145"
+              skip: true,
+              reason: "Payload not compiled for platform"
             }
           ]
         ],
@@ -61,26 +96,18 @@ module Acceptance::Meterpreter
         }
       },
       {
-        name: "post/test/cmd_exec",
-        platforms: [:linux, :osx, :windows],
-        skipped: false,
-        lines: {
-          linux: {
-            known_failures: []
-          },
-          osx: {
-            known_failures: []
-          },
-          windows: {
-            known_failures: [
-              "[-] FAILED: should return the stderr output"
-            ]
-          }
-        }
-      },
-      {
         name: "post/test/extapi",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          :osx,
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {
@@ -96,31 +123,43 @@ module Acceptance::Meterpreter
       },
       {
         name: "post/test/file",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          :osx,
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {
-            known_failures: [
-              "[-] FAILED: should read the binary data we just wrote"
-            ]
+            known_failures: []
           },
           osx: {
-            known_failures: [
-              "[-] FAILED: should read the binary data we just wrote"
-            ]
+            known_failures: []
           },
           windows: {
-            known_failures: [
-              "[-] [should delete a symbolic link target] FAILED: should delete a symbolic link target",
-              "[-] [should delete a symbolic link target] Exception: Rex::Post::Meterpreter::RequestError: stdapi_fs_delete_dir: Operation failed: 1",
-              "[-] FAILED: should read the binary data we just wrote"
-            ]
+            known_failures: []
           }
         }
       },
       {
         name: "post/test/get_env",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          :osx,
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {
@@ -136,7 +175,17 @@ module Acceptance::Meterpreter
       },
       {
         name: "post/test/meterpreter",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          :osx,
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {
@@ -144,7 +193,8 @@ module Acceptance::Meterpreter
           },
           osx: {
             known_failures: [
-              "[-] FAILED: should return a list of processes"
+              "[-] FAILED: should return network interfaces",
+              "[-] FAILED: should have an interface that matches session_host"
             ]
           },
           windows: {
@@ -154,7 +204,17 @@ module Acceptance::Meterpreter
       },
       {
         name: "post/test/railgun",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          :osx,
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {
@@ -170,7 +230,17 @@ module Acceptance::Meterpreter
       },
       {
         name: "post/test/railgun_reverse_lookups",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          :osx,
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {
@@ -201,17 +271,7 @@ module Acceptance::Meterpreter
               reason: "Windows only test"
             }
           ],
-          [
-            :windows,
-            {
-              skip: [
-                :meterpreter_runtime_version,
-                :==,
-                "php5.3"
-              ],
-              reason: "Skip PHP 5.3 as the tests timeout - due to cmd_exec taking 15 seconds for each call. Caused by failure to detect feof correctly - https://github.com/rapid7/metasploit-payloads/blame/c7f7bc2fc0b86e17c3bc078149c71745c5e478b3/php/meterpreter/meterpreter.php#L1127-L1145"
-            }
-          ]
+          :windows
         ],
         skipped: false,
         lines: {
@@ -228,7 +288,23 @@ module Acceptance::Meterpreter
       },
       {
         name: "post/test/search",
-        platforms: [:linux, :osx, :windows],
+        platforms: [
+          :linux,
+          [
+            :osx,
+            {
+              skip: true,
+              reason: "skipped - test/search hangs in osx and CPU spikes to >300%"
+            }
+          ],
+          [
+            :windows,
+            {
+              skip: true,
+              reason: "Payload not compiled for platform"
+            }
+          ]
+        ],
         skipped: false,
         lines: {
           linux: {

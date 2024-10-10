@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    metasploit-framework (6.4.25)
+    metasploit-framework (6.4.31)
       aarch64
       abbrev
       actionpack (~> 7.0.0)
@@ -41,7 +41,7 @@ PATH
       metasploit-concern
       metasploit-credential
       metasploit-model
-      metasploit-payloads (= 2.0.166)
+      metasploit-payloads (= 2.0.175)
       metasploit_data_models
       metasploit_payloads-mettle (= 1.0.31)
       mqtt
@@ -295,7 +295,7 @@ GEM
       activemodel (~> 7.0)
       activesupport (~> 7.0)
       railties (~> 7.0)
-    metasploit-payloads (2.0.166)
+    metasploit-payloads (2.0.175)
     metasploit_data_models (6.0.3)
       activerecord (~> 7.0)
       activesupport (~> 7.0)
@@ -402,7 +402,7 @@ GEM
     reline (0.5.8)
       io-console (~> 0.5)
     require_all (3.0.0)
-    rex-arch (0.1.15)
+    rex-arch (0.1.16)
       rex-text
     rex-bin_tools (0.1.9)
       metasm
@@ -495,7 +495,7 @@ GEM
     ruby-progressbar (1.13.0)
     ruby-rc4 (0.1.5)
     ruby2_keywords (0.0.5)
-    ruby_smb (3.3.9)
+    ruby_smb (3.3.10)
       bindata (= 2.4.15)
       openssl-ccm
       openssl-cmac
@@ -592,4 +592,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.1.4
+   2.5.10

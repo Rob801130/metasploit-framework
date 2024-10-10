@@ -1,19 +1,18 @@
-module Acceptance::Meterpreter
-  PYTHON_METERPRETER = {
+module Acceptance::Session
+  PHP_METERPRETER = {
     payloads: [
       {
-        name: "python/meterpreter_reverse_tcp",
-        extension: ".py",
+        name: "php/meterpreter_reverse_tcp",
+        extension: ".php",
         platforms: [:osx, :linux, :windows],
-        execute_cmd: ["python", "${payload_path}"],
+        execute_cmd: ["php", "${payload_path}"],
         generate_options: {
           '-f': "raw"
         },
         datastore: {
           global: {},
           module: {
-            MeterpreterTryToFork: false,
-            PythonMeterpreterDebug: true
+            MeterpreterDebugBuild: true
           }
         }
       }
@@ -36,7 +35,17 @@ module Acceptance::Meterpreter
               reason: "Windows only test"
             }
           ],
-          :windows
+          [
+            :windows,
+            {
+              skip: [
+                :meterpreter_runtime_version,
+                :==,
+                "php5.3"
+              ],
+              reason: "Skip PHP 5.3 as the tests timeout - due to cmd_exec taking 15 seconds for each call. Caused by failure to detect feof correctly - https://github.com/rapid7/metasploit-payloads/blame/c7f7bc2fc0b86e17c3bc078149c71745c5e478b3/php/meterpreter/meterpreter.php#L1127-L1145"
+            }
+          ]
         ],
         skipped: false,
         lines: {
@@ -47,28 +56,7 @@ module Acceptance::Meterpreter
             known_failures: []
           },
           windows: {
-            known_failures: [
-              "[-] [should start W32Time] FAILED: should start W32Time",
-              "[-] [should start W32Time] Exception: RuntimeError: Could not open service. OpenServiceA error: FormatMessage failed to retrieve the error for value 0x6.",
-              "[-] [should stop W32Time] FAILED: should stop W32Time",
-              "[-] [should stop W32Time] Exception: RuntimeError: Could not open service. OpenServiceA error: FormatMessage failed to retrieve the error for value 0x6.",
-              "[-] [should list services] FAILED: should list services",
-              "[-] [should list services] Exception: NoMethodError: undefined method `service' for nil:NilClass",
-              "[-] [should return info on a given service winmgmt] FAILED: should return info on a given service winmgmt",
-              "[-] [should return info on a given service winmgmt] Exception: NoMethodError: undefined method `service' for nil:NilClass",
-              "[-] FAILED: should create a service testes",
-              "[-] [should return info on the newly-created service testes] FAILED: should return info on the newly-created service testes",
-              "[-] [should return info on the newly-created service testes] Exception: NoMethodError: undefined method `service' for nil:NilClass",
-              "[-] [should delete the new service testes] FAILED: should delete the new service testes",
-              "[-] [should delete the new service testes] Exception: RuntimeError: Could not open service. OpenServiceA error: FormatMessage failed to retrieve the error for value 0x6.",
-              "[-] [should return status on a given service winmgmt] FAILED: should return status on a given service winmgmt",
-              "[-] [should return status on a given service winmgmt] Exception: RuntimeError: Could not open service. OpenServiceA error: FormatMessage failed to retrieve the error for value 0x6.",
-              "[-] [should modify config on a given service] FAILED: should modify config on a given service",
-              "[-] [should modify config on a given service] Exception: RuntimeError: Could not open service. OpenServiceA error: FormatMessage failed to retrieve the error for value 0x6.",
-              "[-] FAILED: should start a disabled service",
-              "[-] [should restart a started service W32Time] FAILED: should restart a started service W32Time",
-              "[-] [should restart a started service W32Time] Exception: RuntimeError: Could not open service. OpenServiceA error: FormatMessage failed to retrieve the error for value 0x6."
-            ]
+            known_failures: []
           }
         }
       },
@@ -84,7 +72,8 @@ module Acceptance::Meterpreter
             known_failures: []
           },
           windows: {
-            known_failures: []
+            known_failures: [
+            ]
           }
         }
       },
@@ -100,12 +89,7 @@ module Acceptance::Meterpreter
             known_failures: []
           },
           windows: {
-            known_failures: [
-              "[-] [should return clipboard jpg dimensions] FAILED: should return clipboard jpg dimensions",
-              "[-] [should return clipboard jpg dimensions] Exception: NoMethodError: undefined method `clipboard' for nil:NilClass",
-              "[-] [should download clipboard jpg data] FAILED: should download clipboard jpg data",
-              "[-] [should download clipboard jpg data] Exception: NoMethodError: undefined method `clipboard' for nil:NilClass"
-            ]
+            known_failures: []
           }
         }
       },
@@ -115,13 +99,21 @@ module Acceptance::Meterpreter
         skipped: false,
         lines: {
           linux: {
-            known_failures: []
+            known_failures: [
+              "[-] FAILED: should read the binary data we just wrote"
+            ]
           },
           osx: {
-            known_failures: []
+            known_failures: [
+              "[-] FAILED: should read the binary data we just wrote"
+            ]
           },
           windows: {
-            known_failures: []
+            known_failures: [
+              "[-] [should delete a symbolic link target] FAILED: should delete a symbolic link target",
+              "[-] [should delete a symbolic link target] Exception: Rex::Post::Meterpreter::RequestError: stdapi_fs_delete_dir: Operation failed: 1",
+              "[-] FAILED: should read the binary data we just wrote"
+            ]
           }
         }
       },
@@ -150,12 +142,12 @@ module Acceptance::Meterpreter
             known_failures: []
           },
           osx: {
-            known_failures: []
+            known_failures: [
+              "[-] FAILED: should return a list of processes"
+            ]
           },
           windows: {
-            known_failures: [
-              "[-] FAILED: should return the proper directory separator"
-            ]
+            known_failures: []
           }
         }
       },
@@ -208,7 +200,17 @@ module Acceptance::Meterpreter
               reason: "Windows only test"
             }
           ],
-          :windows
+          [
+            :windows,
+            {
+              skip: [
+                :meterpreter_runtime_version,
+                :==,
+                "php5.3"
+              ],
+              reason: "Skip PHP 5.3 as the tests timeout - due to cmd_exec taking 15 seconds for each call. Caused by failure to detect feof correctly - https://github.com/rapid7/metasploit-payloads/blame/c7f7bc2fc0b86e17c3bc078149c71745c5e478b3/php/meterpreter/meterpreter.php#L1127-L1145"
+            }
+          ]
         ],
         skipped: false,
         lines: {
