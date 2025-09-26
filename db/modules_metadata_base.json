@@ -96021,6 +96021,59 @@
     "needs_cleanup": true,
     "actions": []
   },
+  "exploit_linux/persistence/init_systemd_override": {
+    "name": "Service SystemD override.conf Persistence",
+    "fullname": "exploit/linux/persistence/init_systemd_override",
+    "aliases": [],
+    "rank": 600,
+    "disclosure_date": "2010-03-30",
+    "type": "exploit",
+    "author": [
+      "h00die"
+    ],
+    "description": "This module will create an override.conf file for a SystemD service on the box.\n          The ExecStartPost hook is used to launch the payload after the service is started.\n          We need enough access (typically root) to write in the /etc/systemd/system\n          directory and potentially restart services.\n          Verified on Ubuntu 22.04",
+    "references": [
+      "URL-https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html",
+      "URL-https://askubuntu.com/a/659268",
+      "URL-https://wiki.archlinux.org/title/Systemd",
+      "ATT&CK-T1543.002"
+    ],
+    "platform": "Linux,Unix",
+    "arch": "cmd, x86, x64, armle, aarch64, ppc, mipsle, mipsbe",
+    "rport": null,
+    "autofilter_ports": [],
+    "autofilter_services": [],
+    "targets": [
+      "systemd",
+      "systemd user"
+    ],
+    "mod_time": "2025-09-26 15:00:09 +0000",
+    "path": "/modules/exploits/linux/persistence/init_systemd_override.rb",
+    "is_install_path": true,
+    "ref_name": "linux/persistence/init_systemd_override",
+    "check": true,
+    "post_auth": false,
+    "default_credential": false,
+    "notes": {
+      "Stability": [
+        "crash-safe"
+      ],
+      "Reliability": [
+        "repeatable-session",
+        "event-dependent"
+      ],
+      "SideEffects": [
+        "artifacts-on-disk",
+        "config-changes"
+      ]
+    },
+    "session_types": [
+      "shell",
+      "meterpreter"
+    ],
+    "needs_cleanup": true,
+    "actions": []
+  },
   "exploit_linux/persistence/motd": {
     "name": "update-motd.d Persistence",
     "fullname": "exploit/linux/persistence/motd",
